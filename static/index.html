@@ -119,7 +119,9 @@
                     var formData = new FormData();
                     formData.append("file", file);
 
-                    fetch('https://tomato-swin-transformer.onrender.com/predict', {
+                    var url = window.location.origin + '/predict';
+
+                    fetch(url, {
                         method: 'POST',
                         body: formData
                     })
