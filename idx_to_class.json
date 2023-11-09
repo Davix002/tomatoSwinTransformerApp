@@ -1,0 +1,12 @@
+{
+    "0": "Tomato_Bacterial_Spot",
+    "1": "Tomato_Early_Blight",
+    "2": "Tomato_Healthy",
+    "3": "Tomato_Late_Blight",
+    "4": "Tomato_Leaf_Mold",
+    "5": "Tomato_Mosaic_Virus",
+    "6": "Tomato_Septoria_Leaf_Spot",
+    "7": "Tomato_Target_Spot",
+    "8": "Tomato_Two_Spotted_Spider_Mite",
+    "9": "Tomato_Yellow_Leaf_Curl_Virus"
+}

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subida de imágenes para predicción</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            color: #333;
+            text-align: center;
+        }
+
+        h1 {
+            color: #5a5a5a;
+        }
+
+        #upload-form {
+            background: white;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        #prediction-result {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            background: #dff0d8;
+            color: #3c763d;
+            display: block;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #uploaded-image {
+            margin-top: 20px;
+            max-width: 500px;
+            max-height: 300px;
+            width: auto;
+            height: auto;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+
+        .custom-file-upload {
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+            background-color: #5cb85c;
+            color: white;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .custom-file-upload:hover {
+            background-color: #4cae4c;
+        }
+
+        #file-upload {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+
+        #file-upload-label {
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1>API de predicción de enfermedades de tomate</h1>
+    <form id="upload-form" method="post" enctype="multipart/form-data">
+        <label for="file-upload" class="custom-file-upload">
+            Selecciona una imagen para predecir
+        </label>
+        <input id="file-upload" type="file" name="file" accept="image/*" required>
+    </form>
+    <div id="image-container"></div>
+    <div id="prediction-result"></div>
+
+    <script>
+        document.getElementById('file-upload').addEventListener('change', function () {
+            var imageContainer = document.getElementById('image-container');
+            var image = document.createElement('img');
+            var fileInput = this;
+            var file = fileInput.files[0];
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+                image.src = reader.result;
+                image.id = "uploaded-image";
+                imageContainer.innerHTML = '';
+                imageContainer.appendChild(image);
+
+                // Solo realiza la predicción si hay un archivo seleccionado
+                if (file) {
+                    var formData = new FormData();
+                    formData.append("file", file);
+
+                    fetch('http://127.0.0.1:5000/predict', {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('prediction-result').textContent = 'Predicción: ' + data.class_name;
+                        })
+                        .catch(error => {
+                            console.error('Error al realizar la predicción:', error);
+                            document.getElementById('prediction-result').textContent = 'Error al realizar la predicción.';
+                        });
+                }
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+
+</html>
