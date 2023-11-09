@@ -1,6 +1,5 @@
 Flask==2.2.3
 Flask_Cors==3.0.10
-Pillow==9.2.0
 Pillow==10.1.0
 timm==0.9.10
 torch==2.1.0
